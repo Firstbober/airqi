@@ -31,11 +31,28 @@ const Home: NextPage = () => {
             </h1>
 
             <div className='mt-20 flex w-full'>
-              <input
-                type="text"
-                placeholder='Your city here!'
-                className='border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:border-indigo-500 h-12'
-              />
+              <div className='relative w-full'>
+                <input
+                  type="text"
+                  placeholder='Your city here!'
+                  className='border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:border-indigo-500 h-12'
+                />
+
+                <div className='absolute bg-white w-full top-14 rounded border shadow p-2'>
+                  {
+                    // <span className='text-gray-400 font-light text-xl'>Nothing has been found</span>
+                  }
+                  {
+                    /*
+                      <a className='flex justify-between font-light text-lg hover:bg-gray-100 p-2 rounded mt-2 first:mt-0' href='#'>
+                        <span><b>Warsaw</b> - Poland</span>
+                        <span className='text-gray-500'>69 AQI</span>
+                      </a>
+                    */
+                  }
+                </div>
+              </div>
+
               <button
                 className='ml-2 rounded-md bg-gradient-to-tr from-red-500 to-pink-500
                   w-14 h-12 flex justify-center items-center hover:scale-125 duration-150'
