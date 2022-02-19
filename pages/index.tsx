@@ -1,9 +1,29 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Link from 'next/link'
+
+import axios from 'axios';
+const fetcher = (url: string, params: any) => axios.get(url, { params: params }).then(res => res.data);
+
+import countries from "i18n-iso-countries";
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 import { LocationMarkerIcon } from '@heroicons/react/outline';
+import React from 'react';
+
+interface CityInfo {
+  name: string,
+  country: string,
+  aqi: number,
+  loc: Array<number>
+};
 
 const Home: NextPage = () => {
+  const [editTimeout, setEditTimeout] = React.useState({} as NodeJS.Timeout);
+  const [findings, setFindings] = React.useState([] as Array<CityInfo>);
+  const [showDropdown, setShowDropdown] = React.useState(false);
+  const [dropdownMessage, setDropdownMessage] = React.useState("Searching...");
+
   return (
     <div>
       <Head>
@@ -36,19 +56,51 @@ const Home: NextPage = () => {
                   type="text"
                   placeholder='Your city here!'
                   className='border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:border-indigo-500 h-12'
+                  onChange={(event) => {
+                    clearTimeout(editTimeout);
+                    setEditTimeout(setTimeout(async () => {
+                      if (event.target.value.length > 0) {
+                        try {
+                          let res = await fetcher("/api/search", { q: event.target.value });
+                          setFindings(res);
+
+                          if (res.length == 0) {
+                            setDropdownMessage("Nothing has been found");
+                          }
+                        } catch (error) { }
+                      }
+                    }, 500));
+
+                    if (event.target.value.length == 0) {
+                      setFindings([]);
+                      setShowDropdown(false);
+                      setDropdownMessage("Searching...");
+                    } else {
+                      setShowDropdown(true);
+                    }
+                  }}
+                  onFocus={(event) => event.target.value.length > 0 ? setShowDropdown(true) : {}}
                 />
 
-                <div className='absolute bg-white w-full top-14 rounded border shadow p-2'>
+                <div className={
+                  'absolute bg-white w-full top-14 rounded shadow border p-2' +
+                  (showDropdown ? '' : ' hidden')
+                }>
                   {
-                    // <span className='text-gray-400 font-light text-xl'>Nothing has been found</span>
-                  }
-                  {
-                    /*
-                      <a className='flex justify-between font-light text-lg hover:bg-gray-100 p-2 rounded mt-2 first:mt-0' href='#'>
-                        <span><b>Warsaw</b> - Poland</span>
-                        <span className='text-gray-500'>69 AQI</span>
-                      </a>
-                    */
+                    findings.length > 0
+                      ? findings.map((city, i) => {
+                        return <Link href={`/location/x=${city.loc[0]}&z=${city.loc[1]}`} key={`dropdown-city-${i}`}>
+                          <a
+                            className='flex justify-between font-light text-lg hover:bg-gray-100 p-2 rounded mt-1 first:mt-0'
+                          >
+                            <span title={`${city.name} - ${countries.getName(city.country, 'en')}`} className='truncate w-3/4 text-left'>
+                              <b>{city.name}</b> - {countries.getName(city.country, 'en')}
+                            </span>
+                            <span className='text-gray-500'>{city.aqi} AQI</span>
+                          </a>
+                        </Link>;
+                      })
+                      : <span className='text-gray-400 font-light text-xl p-4'>{dropdownMessage}</span>
                   }
                 </div>
               </div>
