@@ -3,7 +3,7 @@
 
 Simple web app to look up air quality for your city.
 
-![Screenshot](https://cdn.discordapp.com/attachments/700816039004340284/945052565048000543/unknown.png)
+![Screenshot](https://cdn.discordapp.com/attachments/700816039004340284/945074929647382628/unknown.png)
 
 ## Hosting
 
