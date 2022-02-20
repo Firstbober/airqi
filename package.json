@@ -1,5 +1,8 @@
 {
   "name": "airqi",
+  "description": "Simple web app to look up air quality for your city.",
+  "license": "AGPL-3.0-or-later",
+  "author": "Firstbober <firstbober@tutanota.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

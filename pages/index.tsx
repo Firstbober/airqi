@@ -1,13 +1,23 @@
+/**
+ * AirQi index page.
+ *
+ * Landing page with city search.
+ */
+
+// Next.js specific things.
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link'
 
+// Fetcher for /api/search endpoint.
 import axios from 'axios';
 const fetcher = (url: string, params: any) => axios.get(url, { params: params }).then(res => res.data);
 
+// List of countries ID, so full name can be displayed.
 import countries from "i18n-iso-countries";
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
+// Icon and react.
 import { LocationMarkerIcon } from '@heroicons/react/outline';
 import React from 'react';
 
@@ -20,6 +30,7 @@ interface CityInfo {
 };
 
 const Home: NextPage = () => {
+  // Search states.
   const [editTimeout, setEditTimeout] = React.useState({} as NodeJS.Timeout);
   const [findings, setFindings] = React.useState([] as Array<CityInfo>);
   const [showDropdown, setShowDropdown] = React.useState(false);

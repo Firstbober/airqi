@@ -1,3 +1,9 @@
+/**
+ * /api/search endpoint
+ *
+ * Search api.
+ */
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 import cities from 'all-the-cities';
 

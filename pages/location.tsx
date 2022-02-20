@@ -2,10 +2,12 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next'
 
+// Cities and countries for search and printing.
 import cities from 'all-the-cities';
 import countries from "i18n-iso-countries";
 
-import { CheckIcon } from '@heroicons/react/outline';
+// Icons and api.
+import { CheckIcon, ExclamationIcon, BanIcon } from '@heroicons/react/outline';
 import { getAQIForLocation } from '../app/api';
 
 interface LocationProps {
@@ -35,6 +37,8 @@ const Location: NextPage = (p) => {
           <div className='p-6 flex items-center justify-between w-full'>
             <div className='text-left font-light w-fit'>
               <span className='font-bold text-4xl tracking-wide'>{
+                // Yeee, pretty big amount of ternary operators
+                // but whatever.
                 props.aqi >= 0 && props.aqi <= 50
                   ? 'Great'
                   : props.aqi >= 51 && props.aqi <= 100
@@ -53,34 +57,36 @@ const Location: NextPage = (p) => {
             </div>
 
             {
+              // Here too...
               props.aqi >= 0 && props.aqi <= 50
                 ? <div className='bg-gradient-to-tr from-cyan-500 to-green-400 rounded-md p-2'>
                   <CheckIcon className='h-10 text-white' />
                 </div>
                 : props.aqi >= 51 && props.aqi <= 100
                   ? <div className='bg-gradient-to-tr from-green-500 to-yellow-400 rounded-md p-2'>
-                    <CheckIcon className='h-10 text-white' />
+                    <ExclamationIcon className='h-10 text-white' />
                   </div>
                   : props.aqi >= 101 && props.aqi <= 150
                     ? <div className='bg-gradient-to-tr from-yellow-500 to-orange-400 rounded-md p-2'>
-                      <CheckIcon className='h-10 text-white' />
+                      <ExclamationIcon className='h-10 text-white' />
                     </div>
                     : props.aqi >= 151 && props.aqi <= 200
                       ? <div className='bg-gradient-to-tr from-orange-500 to-red-400 rounded-md p-2'>
-                        <CheckIcon className='h-10 text-white' />
+                        <ExclamationIcon className='h-10 text-white' />
                       </div>
                       : props.aqi >= 201 && props.aqi <= 300
                         ? <div className='bg-gradient-to-tr from-red-500 to-purple-600 rounded-md p-2'>
-                          <CheckIcon className='h-10 text-white' />
+                          <BanIcon className='h-10 text-white' />
                         </div>
                         : <div className='bg-gradient-to-tr from-purple-500 to-black rounded-md p-2'>
-                          <CheckIcon className='h-10 text-white' />
+                          <BanIcon className='h-10 text-white' />
                         </div>
             }
           </div>
           <hr className='w-full' />
           <div className='p-6 font-light text-xl text-gray-600'>
             {
+              // And here.
               props.aqi >= 0 && props.aqi <= 50
               ? 'Air quality is good with little to none pollution'
               : props.aqi >= 51 && props.aqi <= 100
@@ -119,6 +125,7 @@ const Location: NextPage = (p) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let cid = context.query.cid as string;
 
+  // Check if cid query parameter is passed.
   if (cid == undefined) {
     context.res.writeHead(301, {
       Location: '404'
@@ -127,11 +134,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: {} };
   }
 
+  // Find city using cid and get coordinates.
   let city = cities.filter((v) => v.cityId == parseInt(cid));
   let coords = city[0].loc.coordinates.reverse();
 
   let aqi = 0;
 
+  // Get AQI from API.
   try {
     let res = await getAQIForLocation(coords[0], coords[1]);
     aqi = res;
@@ -143,6 +152,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 
+  // Pass props.
   return {
     props: {
       city: city[0].name,
