@@ -12,10 +12,11 @@ import { LocationMarkerIcon } from '@heroicons/react/outline';
 import React from 'react';
 
 interface CityInfo {
+  id: number,
   name: string,
   country: string,
   aqi: number,
-  loc: Array<number>
+  adm_div: string
 };
 
 const Home: NextPage = () => {
@@ -57,6 +58,9 @@ const Home: NextPage = () => {
                   placeholder='Your city here!'
                   className='border border-gray-300 p-3 rounded-md w-full focus:outline-none focus:border-indigo-500 h-12'
                   onChange={(event) => {
+                    setFindings([]);
+                    setDropdownMessage("Searching...");
+
                     clearTimeout(editTimeout);
                     setEditTimeout(setTimeout(async () => {
                       if (event.target.value.length > 0) {
@@ -89,12 +93,14 @@ const Home: NextPage = () => {
                   {
                     findings.length > 0
                       ? findings.map((city, i) => {
-                        return <Link href={`/location/x=${city.loc[0]}&z=${city.loc[1]}`} key={`dropdown-city-${i}`}>
+                        return <Link href={`/location?cid=${city.id}`} key={`dropdown-city-${city.id}`}>
                           <a
                             className='flex justify-between font-light text-lg hover:bg-gray-100 p-2 rounded mt-1 first:mt-0'
                           >
                             <span title={`${city.name} - ${countries.getName(city.country, 'en')}`} className='truncate w-3/4 text-left'>
                               <b>{city.name}</b> - {countries.getName(city.country, 'en')}
+                              <br />
+                              <span className='text-sm text-gray-500'>{city.adm_div}</span>
                             </span>
                             <span className='text-gray-500'>{city.aqi} AQI</span>
                           </a>

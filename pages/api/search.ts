@@ -1,28 +1,30 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import cities from 'all-the-cities';
 
-import axios from 'axios';
-const fetcher = (url: string, params: any) => axios.get(url, { params: params }).then(res => res.data);
+import adminCodes from '../../resources/admin1CodesASCII.json';
+import { getAQIForLocation } from '../../app/api';
 
 const filterMax6 = async (city_name: string) => {
 	let matches = 0;
-	let arr = [];
+	let arr: { id: number, name: string; country: string; aqi: any; adm_div: any; }[] = [];
 
 	for (const city of cities) {
 		if (city.name.toLowerCase().match(city_name.toLowerCase())) {
 			matches += 1;
 
-			let url = `http://api.waqi.info/feed/geo:${city.loc.coordinates[0]};${city.loc.coordinates[1]}/?token=${process.env.AQICN_API_TOKEN}`;
 			try {
-				let res = await fetcher(url, {});
-				if (res.status == 'ok') {
-					arr.push({
-						name: city.name,
-						country: city.country,
-						aqi: res.data.aqi,
-						loc: city.loc.coordinates
-					});
-				}
+				let aqi = await getAQIForLocation(city.loc.coordinates[1], city.loc.coordinates[0]);
+
+				let el = {
+					id: city.cityId,
+					name: city.name,
+					country: city.country,
+					aqi: aqi,
+					adm_div: (adminCodes.countries as any)[city.country][city.adminCode]
+				};
+
+				if (!arr.includes(el))
+					arr.push(el);
 			} catch (error) {
 			}
 		}
