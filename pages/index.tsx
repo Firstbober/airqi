@@ -33,6 +33,8 @@ const Home: NextPage = () => {
   // Search states.
   const [editTimeout, setEditTimeout] = React.useState({} as NodeJS.Timeout);
   const [findings, setFindings] = React.useState([] as Array<CityInfo>);
+
+  // Dropdown states
   const [showDropdown, setShowDropdown] = React.useState(false);
   const [dropdownMessage, setDropdownMessage] = React.useState("Searching...");
 
@@ -51,9 +53,9 @@ const Home: NextPage = () => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
 
-      <main className='max-w-4xl mr-auto ml-auto p-6 text-center h-screen'>
+      <main className='max-w-4xl mr-auto ml-auto p-2 text-center h-screen lg:p-6 flex flex-col'>
         <div className='flex justify-center h-full'>
-          <div className='flex justify-center items-center flex-col w-fit h-fit mt-32 border rounded p-16 z-10 bg-white'>
+          <div className='flex justify-center items-center flex-col w-fit h-fit mt-0 lg:mt-20 border rounded p-4 lg:p-16 z-10 bg-white'>
             <h1 className="text-3xl font-light">
               <span className='
             before:block before:absolute before:-inset-1 before:-skew-y-1
@@ -105,9 +107,10 @@ const Home: NextPage = () => {
                 />
 
                 <div className={
-                  'absolute bg-white w-full top-14 rounded shadow border p-2' +
-                  (showDropdown ? '' : ' hidden')
-                }>
+                  'dropdown absolute bg-white w-full top-14 rounded shadow border p-2' +
+                  (showDropdown ? '' : ' hidden') + (findings.length == 0 ? '' : ' overflow-auto')
+                }
+                >
                   {
                     findings.length > 0
                       ? findings.map((city, i) => {
@@ -129,15 +132,25 @@ const Home: NextPage = () => {
                 </div>
               </div>
 
-              <button
-                className='ml-2 rounded-md bg-gradient-to-tr from-red-500 to-pink-500
-                  w-14 h-12 flex justify-center items-center hover:scale-125 duration-150'
-                title='Use location'
-              >
-                <LocationMarkerIcon className='h-8 text-white' />
-              </button>
+              {
+                /*
+                  <button
+                    className='ml-2 rounded-md bg-gradient-to-tr from-red-500 to-pink-500
+                      w-14 h-12 flex justify-center items-center hover:scale-125 duration-150'
+                    title='Use location'
+                  >
+                    <LocationMarkerIcon className='h-8 text-white' />
+                  </button>
+                */
+              }
             </div>
           </div>
+        </div>
+
+        <div className='mt-auto text-gray-500 font-light'>
+          <span>Powered by geonames.org & openaq.org</span>
+          <br />
+          <span>Made by firstbober</span>
         </div>
       </main>
     </div>

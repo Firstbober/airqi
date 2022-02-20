@@ -10,7 +10,7 @@ import cities from 'all-the-cities';
 import adminCodes from '../../resources/admin1CodesASCII.json';
 import { getAQIForLocation } from '../../app/api';
 
-const filterMax6 = async (city_name: string) => {
+const filterMax5 = async (city_name: string) => {
 	let matches = 0;
 	let arr: { id: number, name: string; country: string; aqi: any; adm_div: any; }[] = [];
 
@@ -35,7 +35,7 @@ const filterMax6 = async (city_name: string) => {
 			}
 		}
 
-		if (matches == 6) {
+		if (matches == 5) {
 			break;
 		}
 	}
@@ -48,5 +48,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		return res.status(400);
 	}
 
-	return res.status(200).json(await filterMax6(req.query.q as string));
+	return res.status(200).json(await filterMax5(req.query.q as string));
 }

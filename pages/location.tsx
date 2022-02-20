@@ -7,8 +7,9 @@ import cities from 'all-the-cities';
 import countries from "i18n-iso-countries";
 
 // Icons and api.
-import { CheckIcon, ExclamationIcon, BanIcon } from '@heroicons/react/outline';
+import { CheckIcon, ExclamationIcon, BanIcon, ChevronLeftIcon } from '@heroicons/react/outline';
 import { getAQIForLocation } from '../app/api';
+import Link from 'next/link';
 
 interface LocationProps {
   error: boolean,
@@ -33,10 +34,9 @@ const Location: NextPage = (p) => {
       <meta name="theme-color" content="#ffffff" />
     </Head>
 
-    <main className='max-w-4xl mr-auto ml-auto p-6 text-center h-screen'>
-      <div className='flex justify-center h-2/3'>
-
-        <div className='flex items-center flex-col w-1/2 h-fit mt-24 border rounded z-10 bg-white shadow-xl first:mr-6'>
+    <main className='max-w-4xl mr-auto ml-auto p-6 text-center h-screen flex flex-col'>
+      <div className='flex flex-col items-center h-2/3'>
+        <div className='flex items-center flex-col w-full md:w-2/3 lg:w-1/2 h-fit mt-20 border rounded z-10 bg-white shadow-xl'>
           <div className='p-6 bg-gradient-to-r from-indigo-500 to-cyan-500 text-white flex flex-col items-start w-full'>
             <span className='text-4xl font-bold mr-2'>{props.city}</span>
             <span className='text-xl text-gray-200 font-light'>in {props.country}</span>
@@ -108,6 +108,21 @@ const Location: NextPage = (p) => {
             }
           </div>
         </div>
+
+        <Link href="/">
+          <a className='flex items-center mt-6 shadow-xl border
+            w-full md:w-2/3 lg:w-1/2 p-4 rounded
+            text-lg font-light duration-100 bg-white hover:bg-gray-100'>
+            <ChevronLeftIcon className='h-6 mr-2' />
+            Go back
+          </a>
+        </Link>
+      </div>
+
+      <div className='mt-auto text-gray-500 font-light'>
+        <span>Powered by geonames.org & openaq.org</span>
+        <br />
+        <span>Made by firstbober</span>
       </div>
     </main>
   </div>;
