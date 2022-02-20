@@ -23,7 +23,14 @@ const Location: NextPage = (p) => {
     <Head>
       <title>{props.city}, {props.country} - AirQi</title>
       <meta name="description" content={`Air Quality Index for the ${props.city}, ${props.country}.`} />
-      <link rel="icon" href="/favicon.ico" />
+
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="manifest" href="/site.webmanifest" />
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+      <meta name="msapplication-TileColor" content="#da532c" />
+      <meta name="theme-color" content="#ffffff" />
     </Head>
 
     <main className='max-w-4xl mr-auto ml-auto p-6 text-center h-screen'>
@@ -88,16 +95,16 @@ const Location: NextPage = (p) => {
             {
               // And here.
               props.aqi >= 0 && props.aqi <= 50
-              ? 'Air quality is good with little to none pollution'
-              : props.aqi >= 51 && props.aqi <= 100
-                ? 'Unusually sensitive people should reduce prolonged exposure'
-                : props.aqi >= 101 && props.aqi <= 150
-                  ? 'Sensitive people should reduce prolonged exposure'
-                  : props.aqi >= 151 && props.aqi <= 200
-                    ? 'Reduce exposure and sensitive people should avoid physical activity'
-                    : props.aqi >= 201 && props.aqi <= 300
-                      ? 'Avoid exposure and physical activity'
-                      : 'Do not exit outdoors unless required'
+                ? 'Air quality is good with little to none pollution'
+                : props.aqi >= 51 && props.aqi <= 100
+                  ? 'Unusually sensitive people should reduce prolonged exposure'
+                  : props.aqi >= 101 && props.aqi <= 150
+                    ? 'Sensitive people should reduce prolonged exposure'
+                    : props.aqi >= 151 && props.aqi <= 200
+                      ? 'Reduce exposure and sensitive people should avoid physical activity'
+                      : props.aqi >= 201 && props.aqi <= 300
+                        ? 'Avoid exposure and physical activity'
+                        : 'Do not exit outdoors unless required'
             }
           </div>
         </div>
@@ -136,7 +143,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Find city using cid and get coordinates.
   let city = cities.filter((v) => v.cityId == parseInt(cid));
-  let coords = city[0].loc.coordinates.reverse();
+  let coords = city[0].loc.coordinates;
 
   let aqi = 0;
 
