@@ -1,5 +1,5 @@
 # AirQi
-![GitHub](https://img.shields.io/github/license/Firstbober/rasagi)
+![GitHub](https://img.shields.io/github/license/Firstbober/airqi)
 
 Simple web app to look up air quality for your city.
 
