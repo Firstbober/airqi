@@ -149,7 +149,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // Get AQI from API.
   try {
-    let res = await getAQIForLocation(coords[0], coords[1]);
+    let res = await getAQIForLocation(coords[1], coords[0]);
     aqi = res;
   } catch (error) {
     return {
