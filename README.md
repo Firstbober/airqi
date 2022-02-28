@@ -14,6 +14,7 @@ I recommend getting a Raspberry Pi or some old computer to use it as a server.
 ```sh
 git clone https://github.com/Firstbober/airqi
 cd airqi
+npm install
 npm run build
 npm run start
 ```
